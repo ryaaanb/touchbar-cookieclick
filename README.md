@@ -1,6 +1,8 @@
 # touchbar-cookieclick
 An Electron app Cookie Clicker inspired project for MacBook Pro's TouchBar.
 
+![Cookie Clicker Mac TouchBar](touch-bar-preview.gif)
+
 ## Prerequisites
 * Latest version of Node.js (at least 6.x.x)
 * MacBook Pro laptop with TouchBar
@@ -15,6 +17,8 @@ npm install
 ```
 npm start
 ```
+
+![Cookie Clicker Mac Screen TouchBar](screen-preview.gif)
 
 
 Excuse the poorly written code, this was just a fun little side project.
