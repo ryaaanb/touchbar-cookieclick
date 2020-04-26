@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Cookie Clicker Touchbar</title>
+
+    <style type="text/css">
+		* {
+			box-sizing: border-box;
+		}
+		html,
+		body {
+			margin: 0;
+			font: 18px 'Helvetica', sans-serif;
+			background: rgb(255, 255, 255);
+			color: #292944;
+			text-align: center;
+		}
+		section {
+			padding: 25px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+			min-height: 100vh;
+		}
+		#stats {
+			list-style: none;
+			text-align: left;
+			position: absolute;
+			left: 20px;
+			top: 20px;
+			width: auto;
+			height: auto;
+			font-size: .85em;
+		}
+		h1 {
+			font-size: 36px;
+		}
+		#pops
+		{
+		position:absolute;
+		left:0px;
+		top:0px;
+		z-index:10000;
+		pointer-events:none;
+		}
+		.pop
+		{
+		font-weight:bold;
+		color:rgb(82, 82, 82);
+		width:200px;
+		height:20px;
+		font-size:20px;
+		text-align:center;
+		}
+    </style>
+    
+</head>
+<body>
+
+<section>
+    <ul id="stats">
+
+
+		<li id="cookie"><h1>🍪 <i id="cookies">0</i> </h1>
+		<div id="pops"></div>
+		</li>
+        <li><h2>👆🏽</h2><b>Power Click lvl: </b> <i id="powerlvl">0 (0/click)</i> </li>
+        <li><h2>🤖</h2><b>Auto Click lvl: </b> <i id="autolvl">0 (0/sec)</i> </li>
+        <li><h2>👵🏽</h2><b>Grandma lvl: </b> <i id="grandmalvl">0 (0/sec)</i> </li>
+        <br><br>
+        <li><b>Seconds since started: </b> <i id="timer">0 seconds</i> </li>
+        <br><br><br>
+		<li><b>How to play: tap the cookie on your Touch Bar!</b></li>
+		<li><small>Created by Ryan Boyling</small></li>
+    </ul>
+</section>
+
+
+</body>
+
+
+<script>
+	function l(what) {return document.getElementById(what);}
+
+    const { ipcRenderer, BrowserWindow } = require('electron');
+    const ipc = ipcRenderer;
+
+    ipc.on('cookies', (event, data) => {
+		document.querySelector('#cookies').innerHTML = data;
+    })
+
+    ipc.on('powerlvl', (event, data) => {
+        document.querySelector('#powerlvl').innerHTML = data;
+    })
+
+    ipc.on('autolvl', (event, data) => {
+        document.querySelector('#autolvl').innerHTML = data;
+    })
+
+    ipc.on('grandmalvl', (event, data) => {
+        document.querySelector('#grandmalvl').innerHTML = data;
+    })
+
+    ipc.on('timer', (event, data) => {
+        document.querySelector('#timer').innerHTML = data;
+	})
+
+	// Pops
+
+	ipc.on('cl-pop', (event, data) => {
+        new Pop('powerlvl','+'+data);
+	})
+
+	ipc.on('ac-pop', (event, data) => {
+        new Pop('autolvl','+'+data);
+	})
+
+	ipc.on('gr-pop', (event, data) => {
+        new Pop('grandmalvl','+'+data);
+	})
+
+	Pops=[];
+	Pop=function(el,str)
+	{
+		this.el=el;
+		this.str=str;
+		this.life=0;
+		this.offx=Math.floor(Math.random()*20-10);
+		this.offy=Math.floor(Math.random()*20-10);
+		Pops.push(this);
+	}
+
+	Main=function(){
+	var str='';
+	for (var i in Pops)
+	{
+		var rect=l(Pops[i].el).getBoundingClientRect();
+		var x=Math.floor((rect.left+rect.right)/2+Pops[i].offx)-100;
+		var y=Math.floor((rect.top+rect.bottom)/2-Math.pow(Pops[i].life/100,0.5)*100+Pops[i].offy)-10;
+		var opacity=0.6-(Math.max(Pops[i].life,80)-80)/20;
+		str+='<div class="pop" style="position:absolute;left:'+x+'px;top:'+y+'px;opacity:'+opacity+';">'+Pops[i].str+'</div>';
+		Pops[i].life+=2;
+		if (Pops[i].life>=100) Pops.splice(i,1);
+	}
+
+	l('pops').innerHTML=str;
+	var str='';
+	setTimeout(Main,1000/30);
+}
+ 
+Main();
+</script>
+</html>

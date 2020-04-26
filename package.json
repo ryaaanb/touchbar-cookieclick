@@ -1,0 +1,21 @@
+{
+  "name": "electron-touch-bar",
+  "version": "1.0.0",
+  "description": "Cookie Clicker for Mac Touch Bar",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "Ryan Boyling <ryan@boyling.co>",
+  "license": "ISC",
+  "dependencies": {
+    "countup.js": "^2.0.4",
+    "data-store": "^4.0.3",
+    "electron": "^1.6.6",
+    "install": "^0.13.0",
+    "npm": "^6.13.2",
+    "play-sound": "^1.1.3"
+  }
+}
